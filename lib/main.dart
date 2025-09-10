@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bili_app/db/hi_cache.dart';
 import 'package:bili_app/http/core/hi_error.dart';
 import 'package:bili_app/http/core/hi_net.dart';
+import 'package:bili_app/http/dao/login_dao.dart';
 import 'package:bili_app/http/request/test_request.dart';
 import 'package:bili_app/model/owner.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _incrementCounter() async {
-    test1();
+    // test1();
     /*TestRequest request = TestRequest();
     request.add("aa", "ddd").add("bb", "cc").add('requestPrams', 'kkk');
     try {
@@ -78,6 +79,8 @@ class _MyHomePageState extends State<MyHomePage> {
     } on HiNetError catch (e) {
       print(e);
     }*/
+
+    testLogin();
   }
 
   void test() {
@@ -149,5 +152,21 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  void testLogin() async {
+
+    try {
+      // var result = await LoginDao.registration('zms', 'zms', '5176107', '9350');
+      // print(result);
+      var result = await LoginDao.login('zms', 'zms');
+      print(result);
+    } on NeedAuth catch(e) {
+      print(e);
+    } on NeedLogin catch(e) {
+      print(e);
+    } catch (e) {
+      print(e);
+    }
   }
 }
