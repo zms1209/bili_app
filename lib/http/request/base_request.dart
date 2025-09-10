@@ -1,3 +1,5 @@
+import 'package:bili_app/http/dao/login_dao.dart';
+
 enum HttpMethod {
   GET,
   POST,
@@ -31,6 +33,12 @@ abstract class BaseRequest {
     } else {
       uri = Uri.http(authority(), pathStr, params);
     }
+
+    if (needLogin()) {
+      // 给需要登录的接口携带登录令牌
+      addHeader(LoginDao.BOARDING_PASS, LoginDao.getBoardingPass());
+    }
+
     print('url:${uri.toString()}');
     return uri.toString();
   }

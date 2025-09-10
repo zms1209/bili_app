@@ -1,16 +1,6 @@
-# bili_app
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+慕课网学习
+课程：https://coding.imooc.com/learn/list/487.html
+《Flutter高级进阶实战-仿哔哩哔哩-掌握Flutter高阶技能》，课程标识：fa
+API文档：https://api.devio.org/uapi/swagger-ui.html
+https://www.geekailab.com/doc/api-help/docs/ft-api-help.html
+账号：zms，密码：zms

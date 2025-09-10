@@ -8,6 +8,8 @@ import 'package:bili_app/http/request/test_request.dart';
 import 'package:bili_app/model/owner.dart';
 import 'package:flutter/material.dart';
 
+import 'http/request/notice_request.dart';
+
 void main() {
   HiCache.preInit();
   runApp(const MyApp());
@@ -80,7 +82,8 @@ class _MyHomePageState extends State<MyHomePage> {
       print(e);
     }*/
 
-    testLogin();
+    // testLogin();
+    testNotice();
   }
 
   void test() {
@@ -169,4 +172,19 @@ class _MyHomePageState extends State<MyHomePage> {
       print(e);
     }
   }
+
+  void testNotice() async {
+    try {
+      var resutl = await HiNet.getInstance()?.fire(NoticeRequest());
+      print(resutl);
+    } on NeedAuth catch(e) {
+      print(e);
+    } on NeedLogin catch(e) {
+      print(e);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+
 }
