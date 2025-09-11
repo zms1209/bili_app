@@ -3,6 +3,7 @@ import 'package:bili_app/http/dao/login_dao.dart';
 import 'package:bili_app/util/string_util.dart';
 import 'package:bili_app/util/toast.dart';
 import 'package:bili_app/widget/appbar.dart';
+import 'package:bili_app/widget/login_btn.dart';
 import 'package:bili_app/widget/login_effect.dart';
 import 'package:bili_app/widget/login_input.dart';
 import 'package:flutter/material.dart';
@@ -36,9 +37,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
         child: ListView(
           children: [
             LoginEffect(protect: protect,),
-            LoginEffect(
-              protect: protect,
-            ),
             LoginInput(
               "用户名",
               "请输入用户名",
@@ -56,7 +54,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 checkInput();
               },
               focusChanged: (focus) {
-                this.setState(() {
+                setState(() {
                   protect = focus;
                 });
               },
@@ -97,7 +95,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
             ),
             Padding(
               padding: EdgeInsets.only(top: 20, left: 20, right: 20),
-              child: LoginButton(
+              child: LoginBtn(
                 '注册',
                 enable: loginEnable,
                 onPressed: checkParams

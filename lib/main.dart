@@ -5,12 +5,13 @@ import 'package:bili_app/http/core/hi_error.dart';
 import 'package:bili_app/http/core/hi_net.dart';
 import 'package:bili_app/http/dao/login_dao.dart';
 import 'package:bili_app/http/request/test_request.dart';
-import 'package:bili_app/model/owner.dart';
+import 'package:bili_app/page/login_page.dart';
 import 'package:bili_app/page/registration_page.dart';
 import 'package:bili_app/util/color.dart';
 import 'package:flutter/material.dart';
 
 import 'http/request/notice_request.dart';
+import 'model/owner.dart';
 
 void main() {
   HiCache.preInit();
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         primarySwatch: Colors.blue
       ),
-      home: RegistrationPage(),
+      home: LoginPage(),
     );
   }
 }
