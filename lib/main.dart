@@ -6,6 +6,7 @@ import 'package:bili_app/http/core/hi_net.dart';
 import 'package:bili_app/http/dao/login_dao.dart';
 import 'package:bili_app/http/request/test_request.dart';
 import 'package:bili_app/model/owner.dart';
+import 'package:bili_app/page/registration_page.dart';
 import 'package:flutter/material.dart';
 
 import 'http/request/notice_request.dart';
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: RegistrationPage(),
     );
   }
 }
