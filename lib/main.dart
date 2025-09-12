@@ -1,21 +1,13 @@
-import 'dart:convert';
-
 import 'package:bili_app/db/hi_cache.dart';
-import 'package:bili_app/http/core/hi_error.dart';
-import 'package:bili_app/http/core/hi_net.dart';
 import 'package:bili_app/http/dao/login_dao.dart';
-import 'package:bili_app/http/request/test_request.dart';
 import 'package:bili_app/model/video_modal.dart';
 import 'package:bili_app/navigator/hi_navigator.dart';
 import 'package:bili_app/page/home_page.dart';
 import 'package:bili_app/page/login_page.dart';
 import 'package:bili_app/page/registration_page.dart';
 import 'package:bili_app/page/video_detail_page.dart';
-import 'package:bili_app/util/color.dart';
+import 'package:bili_app/util/toast.dart';
 import 'package:flutter/material.dart';
-
-import 'http/request/notice_request.dart';
-import 'model/owner.dart';
 
 void main() {
   runApp(const BiliApp());
@@ -54,8 +46,8 @@ class _BiliAppState extends State<BiliApp> {
   }
 }
 
-
-class BiliRouteDelegate extends RouterDelegate<BiliRoutePath> with ChangeNotifier, PopNavigatorRouterDelegateMixin<BiliRoutePath> {
+class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
+    with ChangeNotifier, PopNavigatorRouterDelegateMixin<BiliRoutePath> {
 
   @override
   final GlobalKey<NavigatorState> navigatorKey;
@@ -94,25 +86,46 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath> with ChangeNotifie
         },
       ));
     } else if (routeStatus == RouteStatus.login) {
-      page = pageWrap(LoginPage());
+      page = pageWrap(LoginPage(
+        onSuccess: (){
+          _routeStatus = RouteStatus.home;
+          notifyListeners();
+        },
+        onJumpToRegistration: (){
+          _routeStatus = RouteStatus.registration;
+          notifyListeners();
+        },
+      ));
     }
 
     // 重新创建一个数组，否则pages因引用没有改变路由不会生效
     tempPages = [...tempPages, page];
     pages = tempPages;
 
-    return Navigator(
-      key: navigatorKey,
-      pages: pages,
-      onPopPage: (route, result) {
-        // 是否可以返回
-        if (!route.didPop(result)) {
-          return false;
-        }
-        // pages.removeLast();
-        // notifyListeners();
-        return true;
-      },
+    return WillPopScope(
+      onWillPop: () async => !(await navigatorKey.currentState?.maybePop() ?? false),
+      child: Navigator(
+        key: navigatorKey,
+        pages: pages,
+        onPopPage: (route, result) {
+          if (route.settings is MaterialPage) {
+            // 登录页未登录返回拦截
+            if ((route.settings as MaterialPage).child is LoginPage) {
+              if (!hasLogin) {
+                showWarnToast("请先登录");
+                return false;
+              }
+            }
+          }
+          // 是否可以返回
+          if (!route.didPop(result)) {
+            return false;
+          }
+          pages.removeLast();
+          notifyListeners();
+          return true;
+        },
+      ),
     );
   }
 

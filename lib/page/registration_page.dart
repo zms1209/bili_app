@@ -30,7 +30,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar("注册", "登录", (){
-        print('right button click');
+        if (widget.onJumpToLogin != null) {
+          widget.onJumpToLogin!();
+        }
       }),
       body: Container(
         // 屏幕长度不够可滚动到最下面，自适应键盘弹起，防止遮挡
