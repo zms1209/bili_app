@@ -52,3 +52,5 @@ class RouteStatusInfo {
 
   RouteStatusInfo(this.status, this.page);
 }
+
+

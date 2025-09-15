@@ -58,6 +58,18 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
   List<MaterialPage> pages = [];
   VideoModel? videoModel;
 
+  bool get hasLogin => LoginDao.getBoardingPass() != null;
+
+  RouteStatus get routeStatus {
+    if (_routeStatus != RouteStatus.registration && !hasLogin) {
+      return _routeStatus = RouteStatus.login;
+    } else if (videoModel != null) {
+      return _routeStatus = RouteStatus.detail;
+    } else {
+      return _routeStatus;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var index = getRouteStatusIndex(pages, routeStatus);
@@ -66,7 +78,8 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
       // 要打开的页面在栈中已存在，则将该页面和它上面的所有页面进行出栈
       tempPages = tempPages.sublist(0, index);
     }
-    var page;
+
+    MaterialPage? page;
     if (routeStatus == RouteStatus.home) {
       // 跳转首页时将栈中其他页面进行出栈，因为首页不可回退
       pages.clear();
@@ -99,7 +112,7 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
     }
 
     // 重新创建一个数组，否则pages因引用没有改变路由不会生效
-    tempPages = [...tempPages, page];
+    tempPages = [...tempPages, page!];
     pages = tempPages;
 
     return WillPopScope(
@@ -128,18 +141,6 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
       ),
     );
   }
-
-  RouteStatus get routeStatus {
-    if (_routeStatus != RouteStatus.registration && !hasLogin) {
-      return _routeStatus = RouteStatus.login;
-    } else if (videoModel != null) {
-      return _routeStatus = RouteStatus.detail;
-    } else {
-      return _routeStatus;
-    }
-  }
-
-  bool get hasLogin => LoginDao.getBoardingPass() != null;
 
   @override
   Future<void> setNewRoutePath(BiliRoutePath configuration) async {
