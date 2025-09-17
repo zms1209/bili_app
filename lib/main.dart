@@ -52,7 +52,18 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
   @override
   final GlobalKey<NavigatorState> navigatorKey;
 
-  BiliRouteDelegate() : navigatorKey = GlobalKey<NavigatorState>();
+  BiliRouteDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
+    // 实现路由跳转逻辑
+    HiNavigator.getInstance()?.registerRouteJump(RouteJumpListener(
+        (RouteStatus routeStatus, {Map<String, dynamic>? args}) {
+          _routeStatus = routeStatus;
+          if (routeStatus == RouteStatus.detail) {
+            videoModel = args?['videoMo'];
+          }
+          notifyListeners();
+        }
+    ));
+  }
 
   RouteStatus _routeStatus = RouteStatus.home;
   List<MaterialPage> pages = [];
@@ -71,6 +82,10 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
   }
 
   @override
+  Future<void> setNewRoutePath(BiliRoutePath configuration) async {
+  }
+
+  @override
   Widget build(BuildContext context) {
     var index = getRouteStatusIndex(pages, routeStatus);
     List<MaterialPage> tempPages = [];
@@ -83,32 +98,13 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
     if (routeStatus == RouteStatus.home) {
       // 跳转首页时将栈中其他页面进行出栈，因为首页不可回退
       pages.clear();
-      page = pageWrap(HomePage(
-        onJumpToDetail: (videoModel) {
-          this.videoModel = videoModel;
-          notifyListeners();
-        }
-      ));
+      page = pageWrap(HomePage());
     } else if (routeStatus == RouteStatus.detail) {
       page = pageWrap(VideoDetailPage(video: videoModel));
     } else if (routeStatus == RouteStatus.registration) {
-      page = pageWrap(RegistrationPage(
-        onJumpToLogin: () {
-          _routeStatus = RouteStatus.login;
-          notifyListeners();
-        },
-      ));
+      page = pageWrap(RegistrationPage());
     } else if (routeStatus == RouteStatus.login) {
-      page = pageWrap(LoginPage(
-        onSuccess: (){
-          _routeStatus = RouteStatus.home;
-          notifyListeners();
-        },
-        onJumpToRegistration: (){
-          _routeStatus = RouteStatus.registration;
-          notifyListeners();
-        },
-      ));
+      page = pageWrap(LoginPage());
     }
 
     // 重新创建一个数组，否则pages因引用没有改变路由不会生效
@@ -140,10 +136,6 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
         },
       ),
     );
-  }
-
-  @override
-  Future<void> setNewRoutePath(BiliRoutePath configuration) async {
   }
 }
 

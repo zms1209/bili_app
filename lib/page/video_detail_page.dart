@@ -21,17 +21,3 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
     );
   }
 }
-
-/// 监听路由页面跳转
-/// 感知当前页面是否压后台
-class HiNavigator {
-  static HiNavigator? _instance;
-
-  HiNavigator._();
-
-  static HiNavigator? getInstance() {
-    _instance ??= HiNavigator._();
-
-    return _instance;
-  }
-}
